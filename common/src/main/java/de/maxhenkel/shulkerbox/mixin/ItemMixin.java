@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static de.maxhenkel.shulkerbox.AdvancedShulkerboxesMod.SHULKER_BOX_REPOSITORY;
+import static de.maxhenkel.shulkerbox.AdvancedShulkerboxesMod.ITEM_SHULKER_REPOSITORY;
 
 @Mixin(Item.class)
 public class ItemMixin {
@@ -38,9 +38,9 @@ public class ItemMixin {
         }
 
         if (player instanceof ServerPlayer serverPlayer) {
-            if (SHULKER_BOX_REPOSITORY.canOpen(serverPlayer, itemInHand)) {
+            if (ITEM_SHULKER_REPOSITORY.canOpen(serverPlayer, itemInHand)) {
                 AdvancedShulkerboxMenu.open(serverPlayer, itemInHand);
-                SHULKER_BOX_REPOSITORY.add(serverPlayer, itemInHand);
+                ITEM_SHULKER_REPOSITORY.add(serverPlayer, itemInHand);
             } else {
                 serverPlayer.sendSystemMessage(Component.literal("Veuillez patientez 5 secondes avant de réouvrir votre shulker !").withStyle(ChatFormatting.RED));
             }

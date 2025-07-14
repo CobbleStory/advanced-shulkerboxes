@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockItemMixin",
-    "ItemMixin"
+    "ItemMixin",
+    "ShulkerBoxBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
