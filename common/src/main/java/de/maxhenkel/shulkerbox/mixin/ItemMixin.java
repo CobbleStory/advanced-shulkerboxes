@@ -1,6 +1,8 @@
 package de.maxhenkel.shulkerbox.mixin;
 
 import de.maxhenkel.shulkerbox.menu.AdvancedShulkerboxMenu;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,6 +16,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static de.maxhenkel.shulkerbox.AdvancedShulkerboxesMod.SHULKER_BOX_REPOSITORY;
 
 @Mixin(Item.class)
 public class ItemMixin {
@@ -34,8 +38,14 @@ public class ItemMixin {
         }
 
         if (player instanceof ServerPlayer serverPlayer) {
-            AdvancedShulkerboxMenu.open(serverPlayer, itemInHand);
+            if (SHULKER_BOX_REPOSITORY.canOpen(serverPlayer, itemInHand)) {
+                AdvancedShulkerboxMenu.open(serverPlayer, itemInHand);
+                SHULKER_BOX_REPOSITORY.add(serverPlayer, itemInHand);
+            } else {
+                serverPlayer.sendSystemMessage(Component.literal("Veuillez patientez 5 secondes avant de réouvrir votre shulker !").withStyle(ChatFormatting.RED));
+            }
         }
+
         cir.setReturnValue(InteractionResultHolder.success(itemInHand));
     }
 
